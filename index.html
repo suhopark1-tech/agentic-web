@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Web Orchestration</title>
+    <!-- 구글 폰트 로드 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-glow: rgba(59, 130, 246, 0.4);
+            --card-bg: rgba(30, 41, 59, 0.6);
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* 몽환적인 배경 애니메이션 */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                        radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.15), transparent 25%);
+            animation: pulse-bg 15s infinite alternate;
+        }
+
+        @keyframes pulse-bg {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 히어로 섹션 (첫 화면) */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            word-break: keep-all;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px var(--accent-glow);
+            background: #2563eb;
+        }
+
+        /* 아키텍처 설명 섹션 */
+        .features {
+            padding: 100px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 60px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        /* 글래스모피즘 카드 디자인 */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px 30px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .card.visible {
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .card-icon {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: rgba(148, 163, 184, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg"></div>
+
+    <!-- 첫 번째 화면 -->
+    <section class="hero container">
+        <h1>Agentic Orchestration</h1>
+        <p>단일 프롬프트의 시대를 넘어.<br>4개의 전문 AI 에이전트가 통제 가능하고 가역성 있는<br>안전한 웹사이트 생태계를 자율 운영합니다.</p>
+        <button class="btn" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+            운영 아키텍처 보기
+        </button>
+    </section>
+
+    <!-- 두 번째 화면 (멀티 에이전트 소개) -->
+    <section id="features" class="features container">
+        <h2 class="section-title">4-Agent Crew System</h2>
+        <div class="grid" id="card-grid">
+            <div class="card" style="animation-delay: 0.1s">
+                <div class="card-icon">✍️</div>
+                <h3>창작 에이전트 (Creator)</h3>
+                <p>글로벌 트렌드를 관찰(Observe)하고 웹사이트의 톤앤매너에 맞게 논리적인 콘텐츠 초안을 생성합니다.</p>
+            </div>
+            <div class="card" style="animation-delay: 0.2s">
+                <div class="card-icon">🛡️</div>
+                <h3>제약 린터 (Linter)</h3>
+                <p>작성된 글에 환각(Hallucination)이나 SEO 위반은 없는지 기계적으로 검수하고 통과를 통제합니다.</p>
+            </div>
+            <div class="card" style="animation-delay: 0.3s">
+                <div class="card-icon">🚀</div>
+                <h3>배포 에이전트 (SRE)</h3>
+                <p>인간 지휘관의 최종 승인(HITL)이 떨어진 안전한 콘텐츠만 프로덕션 환경에 배포하며 트래픽을 감시합니다.</p>
+            </div>
+            <div class="card" style="animation-delay: 0.4s">
+                <div class="card-icon">🧹</div>
+                <h3>엔트로피 관리 (GC)</h3>
+                <p>오래된 글, 끊어진 웹 링크를 24시간 백그라운드로 스캔하여 웹사이트의 장기 부패를 자가 치유합니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Controllable Agentic AI. Built with Vibe Coding.</p>
+    </footer>
+
+    <!-- 자바스크립트: 스크롤 시 카드가 부드럽게 나타나는 애니메이션 -->
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        document.querySelectorAll('.card').forEach(card => {
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
